@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/main.css}">
+</head>
+<body>
+
+<div style="text-align: center;">
+    <h4 id="info"></h4>
+
+    <ul id="messages">
+
+    </ul>
+    <form onsubmit="sendNickname(); return false;">
+        <input type="text" id="nickname" placeholder="nickname">
+    </form>
+    <!--</br>-->
+    <form onsubmit="sendMessage(); return false;">
+        <input type="text" id="messageArea" placeholder="Wpisz wiadomość">
+    </form>
+</div>
+
+<script type="text/javascript">
+        var websocketLink = "ws://localhost:8080/room";
+        var infoText = document.getElementById("info");
+        var websocket = new WebSocket(websocketLink);
+
+        var textArea = document.getElementById("messageArea");
+        var messagesArea = document.getElementById("messages");
+        var nickNameArea = document.getElementById("nicknameArea");
+
+        websocket.onopen = function (ev) {
+            infoText.innerHTML = "Połączono!";
+        }
+        websocket.onmessage = function (ev) {
+            messagesArea.innerHTML = messagesArea.innerHTML + "<li>" + ev.data + "</li>";
+            messagesArea.scrollTop=messagesArea.scrollHeight;// powinno scrollowac do dolu
+
+        }
+
+        function sendMessage() {
+            var text = textArea.value;
+            textArea.value = "";
+            websocket.send(text);
+        }
+
+        function sendNickname() {
+            var text = nicknameArea.value;
+            nicknameArea.value = "";
+            websocket.send("nickname:"+text);
+        }
+
+
+</script>
+</body>
+</html>
