@@ -5,20 +5,36 @@
     <title>Chat</title>
     <link rel="stylesheet" type="text/css" th:href="@{/main.css}">
 </head>
-<body>
+<header>
+    <h1>LIVE CHAT</h1>
+    <nav>
+        <a href="#">Pomoc</a>
+        <div class="button-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse"
+                aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        </div>
+    </nav>
+</header>
 
-<div style="text-align: center;">
+<body>
+<div>
     <h4 id="info"></h4>
 
-    <ul id="messages">
+    <ul id="messages"></ul>
 
-    </ul>
-    <form onsubmit="sendNickname(); return false;">
-        <input type="text" id="nickname" placeholder="nickname">
-    </form>
-    <!--</br>-->
     <form onsubmit="sendMessage(); return false;">
         <input type="text" id="messageArea" placeholder="Wpisz wiadomość">
+    </form>
+
+    <br/>
+
+    <form onsubmit="sendNickname(); return false;">
+        <input type="text" id="nicknameArea" placeholder="Wpisz nickname">
     </form>
 </div>
 
@@ -26,33 +42,38 @@
         var websocketLink = "ws://localhost:8080/room";
         var infoText = document.getElementById("info");
         var websocket = new WebSocket(websocketLink);
-
         var textArea = document.getElementById("messageArea");
+        var nicknameArea = document.getElementById("nicknameArea");
         var messagesArea = document.getElementById("messages");
-        var nickNameArea = document.getElementById("nicknameArea");
 
+        <!--funkcja dla otwarcia polaczenia (strony)-->
         websocket.onopen = function (ev) {
             infoText.innerHTML = "Połączono!";
         }
+                <!--wpisanie wiadomosci i wyswietlenie w formie listy-->
         websocket.onmessage = function (ev) {
             messagesArea.innerHTML = messagesArea.innerHTML + "<li>" + ev.data + "</li>";
-            messagesArea.scrollTop=messagesArea.scrollHeight;// powinno scrollowac do dolu
-
+            messagesArea.scrollTop = messagesArea.scrollHeight; // automatyczny scroll do dołu
         }
-
+               <!--funkcje wywolywane w form-->
         function sendMessage() {
             var text = textArea.value;
+            <!--czyszczenie pola-->
             textArea.value = "";
             websocket.send(text);
         }
-
         function sendNickname() {
             var text = nicknameArea.value;
             nicknameArea.value = "";
-            websocket.send("nickname:"+text);
+            websocket.send("nickname:" + text);
         }
 
 
+
 </script>
+
+<footer>
+    © LiveChat
+</footer>
 </body>
 </html>
