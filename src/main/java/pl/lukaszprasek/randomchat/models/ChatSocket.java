@@ -14,7 +14,6 @@ import java.util.*;
 @Component//
 public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigurer {
 
-
     //ze bedziemy wysylac tekst, a nie bajty, itp
     private List<UserModel> userList = new ArrayList<>();
 
@@ -63,30 +62,45 @@ public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigu
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        UserModel sender = findBySession(session);
-        if (setNickname(message, sender)) return;
-        if (sender.getNickname() == null) {
-            sender.sendMessage(new TextMessage("Najpierw wprowadz swoj nick"));
-        }
-        addMessageToQue(message.getPayload());
-        userList.forEach(s-> {
+        userList.forEach(s -> {
+
             try {
-                s.sendMessage(new TextMessage(sender.getNickname()+": "+message.getPayload()));
+                if (s.getUserSession() == session && s.getNickname() == null) {
+                    s.setNickname(message.getPayload());
+                }
+                s.getUserSession().sendMessage(new TextMessage(s.getNickname() + ": " + message.getPayload()));
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
-
-    private boolean setNickname(TextMessage message, UserModel sender) throws IOException {
-        if (message.getPayload().startsWith("nickname:")) {
-            if (sender.getNickname() == null) {
-                sender.setNickname(message.getPayload().replace("nickname", ""));
-            } else {
-                sender.sendMessage(new TextMessage("Nie mozna zmieniac nicku"));
-                return true;
-            }
-        }
-        return false;
-    }
+//    @Override
+//    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+//        UserModel sender = findBySession(session);
+//        if (setNickname(message, sender)) return;
+//        if (sender.getNickname() == null) {
+//            sender.sendMessage(new TextMessage("Najpierw wprowadz swoj nick"));
+//        }
+//        addMessageToQue(message.getPayload());
+//        userList.forEach(s-> {
+//            try {
+//                s.sendMessage(new TextMessage(sender.getNickname()+": "+message.getPayload()));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
+//
+//    private boolean setNickname(TextMessage message, UserModel sender) throws IOException {
+//        if (message.getPayload().startsWith("nickname:")) {
+//            if (sender.getNickname() == null) {
+//                sender.setNickname(message.getPayload().replace("nickname", ""));
+//            } else {
+//                sender.sendMessage(new TextMessage("Nie mozna zmieniac nicku"));
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

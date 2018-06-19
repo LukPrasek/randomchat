@@ -1,41 +1,4 @@
-body {
- background: silver;
-text-align: center;
- display: inline-block;
-    position: relative;
-    width: 100% !important;
-            display: block !important;
 
-}
-  .navbar-toggler {
-    font-size: 12px;
-    font-weight: 800;
-    padding: 13px;
-    text-transform: uppercase;
-    color: $gray-800;
-  }
-header {
-text-align: center;
-    background: #67d4f9;
-    padding: 10px;
-    display:block;
-}
-.counter {
-text-align: center;
-    display: inline-block;
-    position: relative;
-    background-color: silver;
-}
-.navbar-toggle {
-     position: relative;
-     float: right;
-     margin-right: 15px;
-     padding: 9px 10px;
-     margin-top: 8px;
-     margin-bottom: 8px;
-     background-color: transparent;
-     border: 1px solid transparent;
-     border-radius: 0;
 #messages {
 overflow: auto;
 max-height: 300px;
@@ -45,4 +8,14 @@ list-style: none;
 #messages li {
 margin: 0;
 padding-left: 20px;
+}
+
+body {
+ background: silver;
+text-align: center;
+ display: inline-block;
+    position: relative;
+    width: 100% !important;
+    display: block !important;
+
 }
