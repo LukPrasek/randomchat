@@ -18,4 +18,7 @@ public class UserModel {
     public void sendMessage(TextMessage textMessage) throws IOException {
         userSession.sendMessage(textMessage);
     }
+    public void sendServerMessage (TextMessage message) throws IOException {
+        userSession.sendMessage(new TextMessage("server:"+message.getPayload()));
+    }
 }
