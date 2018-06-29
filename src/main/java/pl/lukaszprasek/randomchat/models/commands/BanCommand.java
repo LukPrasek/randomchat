@@ -23,12 +23,15 @@ public class BanCommand extends MainCommand {
 
     @Override
     public boolean executeCommand(UserModel sender, String... args) throws IOException {
-        Optional<UserModel> userToBan = findUserByNickname(args[0]);
+        Optional<UserModel> userToBan = findUserByNickname(args[1]);
 
         if (!userToBan.isPresent()) {
             sender.sendServerMessage(new TextMessage("Taki nick nie istnieje!"));
             return false;
-            // sender.sendMessage(new TextMessage("Wyrzucono gracza!"));
+        } else {
+            userToBan.get().getUserSession().close();
+            sender.sendMessage(new TextMessage("Wyrzucono gracza!"));
+
         }
         String ip = userToBan.get().getUserSession().getRemoteAddress().getHostName();
         if (banRepository.existsByIp(ip)) {

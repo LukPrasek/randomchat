@@ -11,10 +11,14 @@ import java.time.LocalDateTime;
 public class BanEntity {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "IP")
     private String ip;
-    @Column(name="data")
+    @Column(name = "data")
     private LocalDateTime dateTime;
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 }

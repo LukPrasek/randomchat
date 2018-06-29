@@ -52,7 +52,6 @@ public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigu
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         //tak samo usuwanie z listy odbywa sie po UserModel a nie sesji!!!!!
         UserModel userWhoIsExiting = findBySession(session);
-
         sendMessageToAllWithoutSender(userWhoIsExiting.getNickname() + ", odchodzi z czatu!", userWhoIsExiting);
         userListService.removeUser(userWhoIsExiting);
     }
@@ -64,7 +63,7 @@ public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigu
         if (message.getPayload().startsWith("nickname:")) {
             if (sender.getNickname() == null) {
                 sender.setNickname(message.getPayload().replace("nickname:", ""));
-                sender.sendMessage(new TextMessage("Ustawiłeś swój nick"));
+                sender.sendMessage(new TextMessage("Ustawiłeś swój nick na: "+sender.getNickname()));
                 sendMessageToAllWithoutSender(sender.getNickname() + ", dołączył do chatu", sender);
             } else {
                 sender.sendMessage(new TextMessage("Nie możesz zmienić nicku więcej razy!"));
@@ -105,8 +104,9 @@ public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigu
                 mainCommand=new BanCommand(userListService.getUserModels(), banRepository);
                 break;
             }
-            case "ip": {
+            case "showAllIp": {
                 mainCommand=new OnlineIPCommand(userListService.getUserModels());
+                break;
             }
 
             default: {
@@ -114,7 +114,7 @@ public class ChatSocket extends TextWebSocketHandler implements WebSocketConfigu
             }
         }
         try {
-            mainCommand.executeCommand(sender, Arrays.copyOfRange(commandArgs, 1, commandArgs.length));
+            mainCommand.executeCommand(sender, Arrays.copyOfRange(commandArgs, 0, commandArgs.length));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OnlineIPCommand extends MainCommand {
-    public OnlineIPCommand(List<UserModel> userModels) {
-        super(userModels);
+    public OnlineIPCommand(List<UserModel> allUsers) {
+        super(allUsers);
     }
 
     @Override
     public boolean executeCommand(UserModel sender, String... args) throws IOException {
         String allUsers = getAllUsers().stream().map(s -> s.getUserSession()
                 .getRemoteAddress().getHostName())
-                .collect(Collectors.joining("; ", "Adresy IP uwszystkich uczestnikow czatu: ", "."));
+                .collect(Collectors.joining("; ", "Adresy IP wszystkich uczestnikow czatu: ", "."));
         sender.sendMessage(new TextMessage(allUsers));
         return true;
     }

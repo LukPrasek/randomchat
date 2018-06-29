@@ -15,16 +15,20 @@ public class KickCommand extends MainCommand {
 
     @Override
     public boolean executeCommand(UserModel sender, String... args) throws IOException {
-        if(args.length < 1) {
+        if (args.length < 1) {
             sender.sendServerMessage(new TextMessage("Podałeś za mało argumentów " + info()));
             return false;
         }
 
         Optional<UserModel> userToKick = findUserByNickname(args[0]);
-        if(userToKick.isPresent()){
-            userToKick.get().getUserSession().close();
-            sender.sendMessage(new TextMessage("Wyrzucono gracza!"));
-        }else{
+        if (userToKick.isPresent()) {
+            if ((userToKick.get().getNickname().equals(sender.getNickname()))) {
+                sender.sendServerMessage(new TextMessage("Sam nie mozesz siebie wyrzucic!"));
+            } else {
+                userToKick.get().getUserSession().close();
+                sender.sendMessage(new TextMessage("Wyrzucono gracza!"));
+            }
+        } else {
             sender.sendServerMessage(new TextMessage("Taki nick nie istnieje!"));
         }
         return true;

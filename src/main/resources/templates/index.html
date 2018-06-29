@@ -16,12 +16,12 @@
                         <li>
                             <a href="/" title="">Home</a>
                         </li>
-                        <li>
-                            <a ng-href="https://store.google.com/" target="_blank" title="Aplikacje" href="https://store.google.com/">Aplikacja</a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a ng-href="https://store.google.com/" target="_blank" title="Aplikacje" href="https://store.google.com/">Aplikacja</a>-->
+                        <!--</li>-->
                        
                         <li>
-                            <a ng-href="/kontakt" title="Kontakt" href="/kontakt">Kontakt</a>
+                            <a ng-href="/options" title="Options" href="/options">Kontakt</a>
                         </li>
                     </ul>
         </div>
@@ -29,11 +29,10 @@
     </nav>
 </header>
 
+<h4 id="info"></h4>
 
 <div class="form">
   
-    <h4 id="info"></h4>
-
     <ul id="messages"></ul>
 
     <form onsubmit="sendMessage(); return false;">
@@ -49,7 +48,7 @@
 </div>
 
 </div>
-</body>
+<div class="script">
 <script type="text/javascript">
         var websocketLink = "ws://localhost:8080/room";
         var infoText = document.getElementById("info");
@@ -79,7 +78,7 @@
             websocket.send("nickname:" + text);
         }
     </script>
-
+</div>
 <footer>
 
     © LiveChat

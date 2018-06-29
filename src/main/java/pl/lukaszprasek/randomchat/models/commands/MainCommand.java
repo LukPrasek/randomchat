@@ -9,12 +9,15 @@ import java.util.Optional;
 @Getter
 public abstract class MainCommand implements Command {
 
-    private List<UserModel> allUsers;
+       private List<UserModel> allUsers;
 
     public MainCommand(List<UserModel> allUsers) {
         this.allUsers = allUsers;
     }
     protected Optional<UserModel> findUserByNickname(String nickname){
         return allUsers.stream().filter(s->s.getNickname().equals(nickname)).findAny();
+    }
+    public List<UserModel> getAllUsers() {
+        return allUsers;
     }
 }
